@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/proj4.js"></script>
+        <script src="js/proj4leaflet.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Maaper_1.js"></script>
+        <script src="data/Jtikkjokisyntyisetjamoreenimuodostumat_2.js"></script>
+        <script src="data/Glasiaalisetlineaatiot_3.js"></script>
+        <script src="data/Muinaisrannat_4.js"></script>
+        <script src="data/Lohkareikko_5.js"></script>
+        <script src="data/Uurteet_6.js"></script>
+        <script src="data/Potentiaalisetblisterit_7.js"></script>
+        <script>
+        var crs = new L.Proj.CRS('EPSG:3067', '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
+            resolutions: [2800, 1400, 700, 350, 175, 84, 42, 21, 11.2, 5.6, 2.8, 1.4, 0.7, 0.35, 0.14, 0.07],
+        });
+        var map = L.map('map', {
+            crs: crs,
+            continuousWorld: false,
+            worldCopyJump: false, 
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[61.233831396157974,21.638194459881287],[61.78224600206567,22.775733364292872]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Kapsitaustakartta_0');
+        map.getPane('pane_Kapsitaustakartta_0').style.zIndex = 400;
+        var layer_Kapsitaustakartta_0 = L.WMS.layer("http://tiles.kartat.kapsi.fi/taustakartta?", "taustakartta", {
+            pane: 'pane_Kapsitaustakartta_0',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '<a href="">National Land Survey, CC-BY-4.0 via kartat.kapsi.fi</a>',
+        });
+        map.addLayer(layer_Kapsitaustakartta_0);
+        function pop_Maaper_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PINTAMAALA'] !== null ? autolinker.link(feature.properties['PINTAMAALA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PINTAMAA_1'] !== null ? autolinker.link(feature.properties['PINTAMAA_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['POHJAMAALA'] !== null ? autolinker.link(feature.properties['POHJAMAALA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">POHJAMAA_1</th>\
+                        <td>' + (feature.properties['POHJAMAA_1'] !== null ? autolinker.link(feature.properties['POHJAMAA_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">MUODOSTUMA</th>\
+                        <td>' + (feature.properties['MUODOSTUMA'] !== null ? autolinker.link(feature.properties['MUODOSTUMA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['MUODOSTU_1'] !== null ? autolinker.link(feature.properties['MUODOSTU_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Leng'] !== null ? autolinker.link(feature.properties['SHAPE_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        var pattern_Maaper_1_0 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#000000',
+            opacity: 0.705,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_Maaper_1_0.addTo(map);
+        var pattern_Maaper_1_0 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#e8beff',
+            opacity: 0.705,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_Maaper_1_0.addTo(map);
+        var pattern_Maaper_1_0 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#000000',
+            opacity: 0.705,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_Maaper_1_0.addTo(map);
+        var pattern_Maaper_1_0 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#b3dfff',
+            opacity: 0.705,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_Maaper_1_0.addTo(map);
+        var pattern_Maaper_1_0 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#cccccc',
+            opacity: 0.705,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_Maaper_1_0.addTo(map);
+        function style_Maaper_1_0(feature) {
+            switch(String(feature.properties['POHJAMAA_1'])) {
+                case 'Hiekka (Hk) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(202,232,184,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,232,184,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Hiekkamoreeni (Mr) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(245,222,181,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(245,222,181,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'hieno Hieta (HHt) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(232,190,255,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,190,255,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Hienoainesmoreeni (HMr) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(255,211,127,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,211,127,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Hiesu (Hs) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(221,221,254,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(221,221,254,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Kalliomaa (Ka) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(255,128,128,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,128,128,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'karkea Hieta (KHt) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(255,255,190,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,190,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Kartoittamaton (0)':
+                    return {
+                pane: 'pane_Maaper_1',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Maaper_1_0,
+                interactive: true,
+            }
+                    break;
+                case 'Lieju (Lj) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(181,181,181,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(181,181,181,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Liejuhiesu (LjHs) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Maaper_1_0,
+                interactive: true,
+            }
+                    break;
+                case 'liejuinen hieno Hieta (LjHHt) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Maaper_1_0,
+                interactive: true,
+            }
+                    break;
+                case 'Liejusavi (LjSa) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Maaper_1_0,
+                interactive: true,
+            }
+                    break;
+                case 'Rahkaturve (St) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(241,241,241,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(241,241,241,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Rapakallio (RpKa) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(255,163,150,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,163,150,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Saraturve (Ct) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(206,206,206,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(206,206,206,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Savi (Sa) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(176,222,255,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(176,222,255,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Sora (Sr) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(116,180,116,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,180,116,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Turvetuotantoalue (Tu) RT':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(130,130,130,0.705)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(130,130,130,0.705)',
+                interactive: true,
+            }
+                    break;
+                case 'Täytemaa (Ta)':
+                    return {
+                pane: 'pane_Maaper_1',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Maaper_1_0,
+                interactive: true,
+            }
+                    break;
+                case 'Vesi (Ve)':
+                    return {
+                pane: 'pane_Maaper_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,0.705)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Maaper_1');
+        map.getPane('pane_Maaper_1').style.zIndex = 401;
+        map.getPane('pane_Maaper_1').style['mix-blend-mode'] = 'normal';
+        var layer_Maaper_1 = new L.geoJson(json_Maaper_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Maaper_1',
+            layerName: 'layer_Maaper_1',
+            pane: 'pane_Maaper_1',
+            onEachFeature: pop_Maaper_1,
+            style: style_Maaper_1_0,
+        });
+        bounds_group.addLayer(layer_Maaper_1);
+        map.addLayer(layer_Maaper_1);
+        function pop_Jtikkjokisyntyisetjamoreenimuodostumat_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">DEPOSIT__1</th>\
+                        <td>' + (feature.properties['DEPOSIT__1'] !== null ? autolinker.link(feature.properties['DEPOSIT__1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Jtikkjokisyntyisetjamoreenimuodostumat_2_0(feature) {
+            switch(String(feature.properties['DEPOSIT__1'])) {
+                case '1 Glaciofluvial deposit':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,212,72,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.1 Esker':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,172,77,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.1.1 Coarse grained esker core':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,116,77,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.1.2 Esker sand':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,116,77,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.2 Interlobate esker':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,116,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.3 Ice marginal glaciofluvial deposit':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(154,230,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.3.1 Delta':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(154,230,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.3.3 Proximal ice-contact deposit':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(154,230,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.4 Extramarginal deposit':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(181,215,160,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.5 Littoral deposit':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,201,202,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.8 Buried glaciofluvial deposit':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,116,77,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1.8.3 Supposed buried glaciofluvial deposit':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,116,77,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4 Moraine feature':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(135,90,71,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.1 Ice marginal moraine':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,0,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.1.2 De Geer moraine':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,0,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.1.3 Minor recessional moraine':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,0,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.3 Hummocky moraine':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,236,190,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.3.1 Subglacial hummocky moraine (active ice)':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,236,190,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.3.2 Ice contact hummocky moraine  (passive/partly active, pro-glacial/ice frontal)':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,236,190,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.4 Ribbed moraine':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,154,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.4.1 Hummocky ribbed moraine':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,154,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4.4.2 Rogen moraine':
+                    return {
+                pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,154,0,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Jtikkjokisyntyisetjamoreenimuodostumat_2');
+        map.getPane('pane_Jtikkjokisyntyisetjamoreenimuodostumat_2').style.zIndex = 402;
+        map.getPane('pane_Jtikkjokisyntyisetjamoreenimuodostumat_2').style['mix-blend-mode'] = 'normal';
+        var layer_Jtikkjokisyntyisetjamoreenimuodostumat_2 = new L.geoJson(json_Jtikkjokisyntyisetjamoreenimuodostumat_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+            layerName: 'layer_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+            pane: 'pane_Jtikkjokisyntyisetjamoreenimuodostumat_2',
+            onEachFeature: pop_Jtikkjokisyntyisetjamoreenimuodostumat_2,
+            style: style_Jtikkjokisyntyisetjamoreenimuodostumat_2_0,
+        });
+        bounds_group.addLayer(layer_Jtikkjokisyntyisetjamoreenimuodostumat_2);
+        map.addLayer(layer_Jtikkjokisyntyisetjamoreenimuodostumat_2);
+        function pop_Glasiaalisetlineaatiot_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">DEPOSIT__1</th>\
+                        <td>' + (feature.properties['DEPOSIT__1'] !== null ? autolinker.link(feature.properties['DEPOSIT__1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Glasiaalisetlineaatiot_3_0(feature) {
+            switch(String(feature.properties['DEPOSIT__1'])) {
+                case '3 Glacial lineation':
+                    return {
+                pane: 'pane_Glasiaalisetlineaatiot_3',
+                opacity: 1,
+                color: 'rgba(202,124,245,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '3.1 Drumlin or drumlinoid':
+                    return {
+                pane: 'pane_Glasiaalisetlineaatiot_3',
+                opacity: 1,
+                color: 'rgba(116,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '3.2 Rock drumlin':
+                    return {
+                pane: 'pane_Glasiaalisetlineaatiot_3',
+                opacity: 1,
+                color: 'rgba(255,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '3.3 Through valley or crescent through':
+                    return {
+                pane: 'pane_Glasiaalisetlineaatiot_3',
+                opacity: 1,
+                color: 'rgba(255,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '3.4 Fluting':
+                    return {
+                pane: 'pane_Glasiaalisetlineaatiot_3',
+                opacity: 1,
+                color: 'rgba(255,157,55,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '3.5 Megafluting':
+                    return {
+                pane: 'pane_Glasiaalisetlineaatiot_3',
+                opacity: 1,
+                color: 'rgba(230,0,169,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Glasiaalisetlineaatiot_3');
+        map.getPane('pane_Glasiaalisetlineaatiot_3').style.zIndex = 403;
+        map.getPane('pane_Glasiaalisetlineaatiot_3').style['mix-blend-mode'] = 'normal';
+        var layer_Glasiaalisetlineaatiot_3 = new L.geoJson(json_Glasiaalisetlineaatiot_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Glasiaalisetlineaatiot_3',
+            layerName: 'layer_Glasiaalisetlineaatiot_3',
+            pane: 'pane_Glasiaalisetlineaatiot_3',
+            onEachFeature: pop_Glasiaalisetlineaatiot_3,
+            style: style_Glasiaalisetlineaatiot_3_0,
+        });
+        bounds_group.addLayer(layer_Glasiaalisetlineaatiot_3);
+        map.addLayer(layer_Glasiaalisetlineaatiot_3);
+        function pop_Muinaisrannat_4(feature, layer) {
+        }
+
+        function style_Muinaisrannat_4_0() {
+            return {
+                pane: 'pane_Muinaisrannat_4',
+                opacity: 1,
+                color: 'rgba(213,180,60,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Muinaisrannat_4');
+        map.getPane('pane_Muinaisrannat_4').style.zIndex = 404;
+        map.getPane('pane_Muinaisrannat_4').style['mix-blend-mode'] = 'normal';
+        var layer_Muinaisrannat_4 = new L.geoJson(json_Muinaisrannat_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Muinaisrannat_4',
+            layerName: 'layer_Muinaisrannat_4',
+            pane: 'pane_Muinaisrannat_4',
+            onEachFeature: pop_Muinaisrannat_4,
+            style: style_Muinaisrannat_4_0,
+        });
+        bounds_group.addLayer(layer_Muinaisrannat_4);
+        map.addLayer(layer_Muinaisrannat_4);
+        function pop_Lohkareikko_5(feature, layer) {
+        }
+
+        function style_Lohkareikko_5_0() {
+            return {
+                pane: 'pane_Lohkareikko_5',
+                radius: 5.1999999999999975,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Lohkareikko_5');
+        map.getPane('pane_Lohkareikko_5').style.zIndex = 405;
+        map.getPane('pane_Lohkareikko_5').style['mix-blend-mode'] = 'normal';
+        var layer_Lohkareikko_5 = new L.geoJson(json_Lohkareikko_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Lohkareikko_5',
+            layerName: 'layer_Lohkareikko_5',
+            pane: 'pane_Lohkareikko_5',
+            onEachFeature: pop_Lohkareikko_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Lohkareikko_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Lohkareikko_5);
+        map.addLayer(layer_Lohkareikko_5);
+        function pop_Uurteet_6(feature, layer) {
+        }
+
+        function style_Uurteet_6_0() {
+            return {
+                pane: 'pane_Uurteet_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(133,182,111,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Uurteet_6');
+        map.getPane('pane_Uurteet_6').style.zIndex = 406;
+        map.getPane('pane_Uurteet_6').style['mix-blend-mode'] = 'normal';
+        var layer_Uurteet_6 = new L.geoJson(json_Uurteet_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Uurteet_6',
+            layerName: 'layer_Uurteet_6',
+            pane: 'pane_Uurteet_6',
+            onEachFeature: pop_Uurteet_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Uurteet_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Uurteet_6);
+        map.addLayer(layer_Uurteet_6);
+        function pop_Potentiaalisetblisterit_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['x'] !== null ? autolinker.link(feature.properties['x'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['y'] !== null ? autolinker.link(feature.properties['y'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Potentiaalisetblisterit_7_0(feature) {
+            switch(String(feature.properties['ID'])) {
+                case '1':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '5':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '6':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '7':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '8':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '9':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '10':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '11':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '12':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '13':
+                    return {
+                pane: 'pane_Potentiaalisetblisterit_7',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Potentiaalisetblisterit_7');
+        map.getPane('pane_Potentiaalisetblisterit_7').style.zIndex = 407;
+        map.getPane('pane_Potentiaalisetblisterit_7').style['mix-blend-mode'] = 'normal';
+        var layer_Potentiaalisetblisterit_7 = new L.geoJson(json_Potentiaalisetblisterit_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Potentiaalisetblisterit_7',
+            layerName: 'layer_Potentiaalisetblisterit_7',
+            pane: 'pane_Potentiaalisetblisterit_7',
+            onEachFeature: pop_Potentiaalisetblisterit_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_Potentiaalisetblisterit_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Potentiaalisetblisterit_7);
+        map.addLayer(layer_Potentiaalisetblisterit_7);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Potentiaaliset blisterit<br /><table><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_10.png" /></td><td>1</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_21.png" /></td><td>2</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_32.png" /></td><td>3</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_43.png" /></td><td>4</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_54.png" /></td><td>5</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_65.png" /></td><td>6</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_76.png" /></td><td>7</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_87.png" /></td><td>8</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_98.png" /></td><td>9</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_109.png" /></td><td>10</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_1110.png" /></td><td>11</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_1211.png" /></td><td>12</td></tr><tr><td style="text-align: center;"><img src="legend/Potentiaalisetblisterit_7_1312.png" /></td><td>13</td></tr></table>': layer_Potentiaalisetblisterit_7,'<img src="legend/Uurteet_6.png" /> Uurteet': layer_Uurteet_6,'<img src="legend/Lohkareikko_5.png" /> Lohkareikko': layer_Lohkareikko_5,'<img src="legend/Muinaisrannat_4.png" /> Muinaisrannat': layer_Muinaisrannat_4,'Glasiaaliset lineaatiot<br /><table><tr><td style="text-align: center;"><img src="legend/Glasiaalisetlineaatiot_3_3Glaciallineation0.png" /></td><td>3 Glacial lineation</td></tr><tr><td style="text-align: center;"><img src="legend/Glasiaalisetlineaatiot_3_31Drumlinordrumlinoid1.png" /></td><td>3.1 Drumlin or drumlinoid</td></tr><tr><td style="text-align: center;"><img src="legend/Glasiaalisetlineaatiot_3_32Rockdrumlin2.png" /></td><td>3.2 Rock drumlin</td></tr><tr><td style="text-align: center;"><img src="legend/Glasiaalisetlineaatiot_3_33Throughvalleyorcrescentthrough3.png" /></td><td>3.3 Through valley or crescent through</td></tr><tr><td style="text-align: center;"><img src="legend/Glasiaalisetlineaatiot_3_34Fluting4.png" /></td><td>3.4 Fluting</td></tr><tr><td style="text-align: center;"><img src="legend/Glasiaalisetlineaatiot_3_35Megafluting5.png" /></td><td>3.5 Megafluting</td></tr></table>': layer_Glasiaalisetlineaatiot_3,'Jäätikköjokisyntyiset - ja moreenimuodostumat<br /><table><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_1Glaciofluvialdeposit0.png" /></td><td>1 Glaciofluvial deposit</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_11Esker1.png" /></td><td>1.1 Esker</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_111Coarsegrainedeskercore2.png" /></td><td>1.1.1 Coarse grained esker core</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_112Eskersand3.png" /></td><td>1.1.2 Esker sand</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_12Interlobateesker4.png" /></td><td>1.2 Interlobate esker</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_13Icemarginalglaciofluvialdeposit5.png" /></td><td>1.3 Ice marginal glaciofluvial deposit</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_131Delta6.png" /></td><td>1.3.1 Delta</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_133Proximalicecontactdeposit7.png" /></td><td>1.3.3 Proximal ice-contact deposit</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_14Extramarginaldeposit8.png" /></td><td>1.4 Extramarginal deposit</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_15Littoraldeposit9.png" /></td><td>1.5 Littoral deposit</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_18Buriedglaciofluvialdeposit10.png" /></td><td>1.8 Buried glaciofluvial deposit</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_183Supposedburiedglaciofluvialdeposit11.png" /></td><td>1.8.3 Supposed buried glaciofluvial deposit</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_4Morainefeature12.png" /></td><td>4 Moraine feature</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_41Icemarginalmoraine13.png" /></td><td>4.1 Ice marginal moraine</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_412DeGeermoraine14.png" /></td><td>4.1.2 De Geer moraine</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_413Minorrecessionalmoraine15.png" /></td><td>4.1.3 Minor recessional moraine</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_43Hummockymoraine16.png" /></td><td>4.3 Hummocky moraine</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_431Subglacialhummockymoraineactiveice17.png" /></td><td>4.3.1 Subglacial hummocky moraine (active ice)</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_432Icecontacthummockymorainepassivepartlyactiveproglacialicefrontal18.png" /></td><td>4.3.2 Ice contact hummocky moraine  (passive/partly active, pro-glacial/ice frontal)</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_44Ribbedmoraine19.png" /></td><td>4.4 Ribbed moraine</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_441Hummockyribbedmoraine20.png" /></td><td>4.4.1 Hummocky ribbed moraine</td></tr><tr><td style="text-align: center;"><img src="legend/Jtikkjokisyntyisetjamoreenimuodostumat_2_442Rogenmoraine21.png" /></td><td>4.4.2 Rogen moraine</td></tr></table>': layer_Jtikkjokisyntyisetjamoreenimuodostumat_2,'Maaperä<br /><table><tr><td style="text-align: center;"><img src="legend/Maaper_1_HiekkaHkRT0.png" /></td><td>Hiekka (Hk) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_HiekkamoreeniMrRT1.png" /></td><td>Hiekkamoreeni (Mr) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_hienoHietaHHtRT2.png" /></td><td>hieno Hieta (HHt) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_HienoainesmoreeniHMrRT3.png" /></td><td>Hienoainesmoreeni (HMr) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_HiesuHsRT4.png" /></td><td>Hiesu (Hs) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_KalliomaaKaRT5.png" /></td><td>Kalliomaa (Ka) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_karkeaHietaKHtRT6.png" /></td><td>karkea Hieta (KHt) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_Kartoittamaton07.png" /></td><td>Kartoittamaton (0)</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_LiejuLjRT8.png" /></td><td>Lieju (Lj) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_LiejuhiesuLjHsRT9.png" /></td><td>Liejuhiesu (LjHs) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_liejuinenhienoHietaLjHHtRT10.png" /></td><td>liejuinen hieno Hieta (LjHHt) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_LiejusaviLjSaRT11.png" /></td><td>Liejusavi (LjSa) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_RahkaturveStRT12.png" /></td><td>Rahkaturve (St) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_RapakallioRpKaRT13.png" /></td><td>Rapakallio (RpKa) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_SaraturveCtRT14.png" /></td><td>Saraturve (Ct) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_SaviSaRT15.png" /></td><td>Savi (Sa) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_SoraSrRT16.png" /></td><td>Sora (Sr) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_TurvetuotantoalueTuRT17.png" /></td><td>Turvetuotantoalue (Tu) RT</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_TäytemaaTa18.png" /></td><td>Täytemaa (Ta)</td></tr><tr><td style="text-align: center;"><img src="legend/Maaper_1_VesiVe19.png" /></td><td>Vesi (Ve)</td></tr></table>': layer_Maaper_1,"Kapsi - taustakartta": layer_Kapsitaustakartta_0,}).addTo(map);L.control.scale({position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_Potentiaalisetblisterit_7,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'ID'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+    </body>
+</html>
